@@ -10,7 +10,6 @@ class Tiket extends Model
 
     protected $fillable = [
         'site_id',
-        'site_name',
         'saverity',
         'suspect_problem',
         'time_down',

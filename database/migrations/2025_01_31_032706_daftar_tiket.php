@@ -13,7 +13,6 @@ return new class extends Migration {
         Schema::create('daftar_tiket', function (Blueprint $table) {
             $table->id();
             $table->string('site_id');
-            $table->string('site_name');
             $table->string('saverity');
             $table->string('suspect_problem');
             $table->string('time_down');

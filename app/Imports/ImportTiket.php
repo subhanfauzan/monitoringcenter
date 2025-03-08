@@ -25,11 +25,12 @@ class ImportTiket implements ToModel
             return null;
         }
 
+        $statusSite = ($row[16] !== 'ESCALATED TO INSERA') ? 'Power' : 'ESCALATED TO INSERA';
+
         return new Tiket([
-            'site_id' => $row[4],
-            'site_name' => $row[5],
+            'site_id' => $row[4] . '_' . $row[5],
             'saverity' => $row[2],
-            'suspect_problem' => $row[16],
+            'suspect_problem' => $statusSite,
             'time_down' => $row[10],
             'waktu_saat_ini' => $row[11],
             'status_site' => 'Down',

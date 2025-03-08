@@ -123,7 +123,6 @@ class TiketDataTable extends DataTable
                 ->searchable(false) // Prevent searching on this column
                 ->orderable(false),
             Column::make('site_id'),
-            Column::make('site_name'),
             Column::make('saverity'),
             Column::make('suspect_problem'),
             Column::computed('time_down'),

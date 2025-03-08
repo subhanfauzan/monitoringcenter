@@ -6,6 +6,7 @@ use App\Imports\ImportTiket;
 use App\Models\Dapot;
 use App\Models\Tiket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -101,6 +102,48 @@ class TiketController extends Controller
                 [
                     'success' => false,
                     'message' => $e->getMessage(),
+                ],
+                500,
+            );
+        }
+    }
+
+    public function destroynop($id)
+    {
+        try {
+            $deleted = Tiket::where('nop', "NOP $id")->delete();
+
+            if ($deleted) {
+                return response()->json(['success' => true, 'message' => 'Semua data berhasil dihapus'], 200);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Data tidak ditemukan'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function destroyall()
+    {
+        try {
+            $deleted = Tiket::query()->delete(); // Changed from forceDelete()
+
+            if ($deleted >= 0) {
+                // Check if deletion was attempted, even if 0 rows
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => 'Semua data berhasil dihapus',
+                        'count' => $deleted, // Optional: number of deleted rows
+                    ],
+                    200,
+                );
+            }
+        } catch (\Exception $e) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
                 ],
                 500,
             );

@@ -11,6 +11,9 @@
                                 data-bs-target="#basicModal">Import</button>
                             <button type="button" data-bs-toggle="modal" class="btn btn-secondary waves-effect waves-light"
                                 data-bs-target="#basicModal">Export</button>
+                            <button type="button" class="btn btn-secondary waves-effect waves-light"
+                                onclick="confirmDeleteNop(this)">Hapus Semua Data
+                            </button>
                         </div>
                     </div>
                     <div class="table-responsive text-nowrap text-center">
@@ -98,6 +101,62 @@
                         // Handle errors
                         this.on("error", function(file, errorMessage) {
                             alert(errorMessage);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            window.confirmDeleteNop = function(e) {
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: `/tiket/deleteall`, // Pastikan URL ini cocok dengan route Anda
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                                "_method": 'DELETE',
+                            },
+                            success: function(data) {
+                                console.log("Response:",
+                                data); // Tambahkan log untuk debugging
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: "Deleted!",
+                                        text: data.message ||
+                                            "Your file has been deleted.",
+                                        icon: "success"
+                                    });
+                                    $('#tiket-table').DataTable().ajax.reload(null, false);
+                                } else {
+                                    Swal.fire({
+                                        title: "Error!",
+                                        text: data.message ||
+                                            "Failed to delete data",
+                                        icon: "error"
+                                    });
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("Error details:", xhr
+                                .responseText); // Tambahkan log untuk debugging
+                                Swal.fire({
+                                    title: "Error!",
+                                    text: "Something went wrong: " + error,
+                                    icon: "error"
+                                });
+                            }
                         });
                     }
                 });

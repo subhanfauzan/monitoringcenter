@@ -12,7 +12,7 @@
 
             <ul class="menu-inner py-1">
                 <li class="menu-item">
-                    <a href="/" class="menu-link">
+                    <a href="/dashboard" class="menu-link">
                         <i class="menu-icon tf-icons ti ti-id"></i>
                         <div data-i18n="Dashboard">Dashboard</div>
                     </a>
